@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.example.androidprotogenerator.data";
+option java_multiple_files = true;
+
+message ModeOption {
+
+  enum Mode {
+    NONE = 0;
+    ECSTATIC = 1;
+    HAPPY = 2;
+    SAD = 3;
+    DEPRESSED = 4;
+  }
+
+  Mode mode = 1;
+}
