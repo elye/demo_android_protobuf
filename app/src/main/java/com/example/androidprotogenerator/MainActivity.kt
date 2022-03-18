@@ -95,7 +95,7 @@ fun DropdownDemo() {
             ProtoFile.writeToFile(context, items[selectedIndex])
 
         }) {
-            Text("Save to File")
+            Text("Save to Internal File")
         }
         Spacer(Modifier.height(8.dp))
         Button(onClick = {
@@ -113,10 +113,40 @@ fun DropdownDemo() {
             }
 
         }) {
-            Text("Read from File")
+            Text("Read from Internal File")
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = {
+            Toast.makeText(
+                context, "Saved ${items[selectedIndex].name} to file", Toast.LENGTH_SHORT
+            ).show()
+
+            ProtoFile.writeToExternalFile(context, items[selectedIndex])
+
+        }) {
+            Text("Save to External File")
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = {
+
+            val data = ProtoFile.readFromExternalFile(context)
+            if (data != null) {
+                Toast.makeText(context,
+                    "From File ${data.mode}", Toast.LENGTH_SHORT
+                ).show()
+                selectedIndex = data.modeValue
+            } else {
+                Toast.makeText(
+                    context, "No data read", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }) {
+            Text("Read from External File")
         }
     }
 }
+
 
 @Composable
 fun Greeting(name: String) {
