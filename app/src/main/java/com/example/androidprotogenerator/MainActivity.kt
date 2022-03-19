@@ -1,5 +1,6 @@
 package com.example.androidprotogenerator
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -86,64 +87,51 @@ fun DropdownDemo() {
                 }
             }
         }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = {
-            Toast.makeText(
-                context, "Saved ${items[selectedIndex].name} to file", Toast.LENGTH_SHORT
-            ).show()
-
+        MyButton("Save to Internal File") {
+            Toast.makeText(context,"Saved ${items[selectedIndex].name} to file", Toast.LENGTH_SHORT).show()
             ProtoFile.writeToFile(context, items[selectedIndex])
-
-        }) {
-            Text("Save to Internal File")
         }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = {
-
+        MyButton("Read from Internal File") {
             val data = ProtoFile.readFromFile(context)
-            if (data != null) {
-                Toast.makeText(context,
-                    "From File ${data.mode}", Toast.LENGTH_SHORT
-                ).show()
-                selectedIndex = data.modeValue
-            } else {
-                Toast.makeText(
-                    context, "No data read", Toast.LENGTH_SHORT
-                ).show()
-            }
-
-        }) {
-            Text("Read from Internal File")
+            setAndToastReadData(data, context) { selectedIndex = it }
         }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = {
-            Toast.makeText(
-                context, "Saved ${items[selectedIndex].name} to file", Toast.LENGTH_SHORT
-            ).show()
-
+        MyButton("Save to External File") {
+            Toast.makeText(context, "Saved ${items[selectedIndex].name} to file", Toast.LENGTH_SHORT).show()
             ProtoFile.writeToExternalFile(context, items[selectedIndex])
-
-        }) {
-            Text("Save to External File")
         }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = {
-
+        MyButton("Read from External File") {
             val data = ProtoFile.readFromExternalFile(context)
-            if (data != null) {
-                Toast.makeText(context,
-                    "From File ${data.mode}", Toast.LENGTH_SHORT
-                ).show()
-                selectedIndex = data.modeValue
-            } else {
-                Toast.makeText(
-                    context, "No data read", Toast.LENGTH_SHORT
-                ).show()
-            }
-
-        }) {
-            Text("Read from External File")
+            setAndToastReadData(data, context) { selectedIndex = it }
         }
+    }
+}
+
+private fun setAndToastReadData(
+    data: ModeOption?,
+    context: Context,
+    action: (Int) -> Unit
+) {
+    if (data != null) {
+        Toast.makeText(
+            context,
+            "From File ${data.mode}", Toast.LENGTH_SHORT
+        ).show()
+        action(data.modeValue)
+    } else {
+        Toast.makeText(
+            context, "No data read", Toast.LENGTH_SHORT
+        ).show()
+    }
+}
+
+@Composable
+private fun MyButton(
+    caption: String,
+    action: () -> Unit
+) {
+    Spacer(Modifier.height(8.dp))
+    Button(onClick = action) {
+        Text(caption)
     }
 }
 
