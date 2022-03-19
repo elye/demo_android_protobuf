@@ -9,7 +9,7 @@ import java.lang.Exception
 
 object ProtoFile {
 
-    private val fileName = "myfile.txt"
+    private val fileName = "myfile.pbd"
     private val folder = "LET"
 
     fun writeToFile(context: Context, mode: ModeOption.Mode) {
